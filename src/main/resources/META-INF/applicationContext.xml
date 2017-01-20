@@ -9,6 +9,7 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
         http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd">
 
+    <!--spring,固定扫描annotation的类，根据对象的类型或者名字自动加载-->
     <context:component-scan base-package="com.lov.service"/>
     <context:component-scan base-package="com.lov.dao"/>
     <context:component-scan base-package="com.lov.entity"/>

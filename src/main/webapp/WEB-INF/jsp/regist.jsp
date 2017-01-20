@@ -9,69 +9,73 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author"      content="Sergey Pozhilov (GetTemplate.com)">
-
-    <title>Sign up - Progressus Bootstrap template</title>
-
-    <link rel="shortcut icon" href="${ctx}/images/gt_favicon.png">
-
-    <link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
-    <link rel="stylesheet" href="${ctx}/css/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="${ctx}/css/bootstrap/font-awesome.min.css">
-
-    <!-- Custom styles for our template -->
-    <link rel="stylesheet" href="${ctx}/css/bootstrap/bootstrap-theme.css" media="screen" >
-    <link rel="stylesheet" href="${ctx}/css/bootstrap/main.css">
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="/js/html5shiv.js"></script>
-    <script src="/js/respond.min.js"></script>
-    <![endif]-->
-
-    <script src="${ctx}/js/jquery-1.9.1.js" type="text/javascript" ></script>
+<jsp:include page="head.jsp"></jsp:include>
+<title>注册界面</title>
 </head>
 
+<script>
+    $(function () {
+        $(".btn").click(function () {
+
+            var username = $("#id-username").val();
+            var password = $("#id-password").val();
+            var password_r = $('#id-password_repete').val();
+            console.log('点击..' + username + ", " + password + ",  " + password_r);
+            if (username == "") {
+                alert('用户名为空');
+            } else if (password == "") {
+                alert('密码为空');
+            } else if (password != password_r) {
+                alert('密码两次输入不相同');
+            }else{
+                $.ajax( {
+                    url:'signin.do',
+                    type:'POST',
+                    dataType:'json',
+                    timeout : 50000,
+                    async: false,    // 使用同步操作
+                    data:{
+                        username: username,
+                        password: password
+                    },
+                    success: function (r) {
+                        if (r.code) {
+                            alert('注册成功');
+                            //window.location.href="login.do?username=" + username + "&password" + password;
+                        } else {
+                            alert('注册失败');
+                        }
+                    },
+                    error:function (err,e) {
+                        alert('请求出错' + err.readyState);
+                    }
+
+
+                });
+            }
+        });
+        
+
+    });
+    function check_change() {
+        var state = $('.id-checkbox').is(':checked');
+        //console.log('state:' + state);
+        if(state){
+            //console.log('state:' + state);
+            $('.btn').attr("disabled",false);
+        }else{
+            $('.btn').attr("disabled",true);
+
+        }
+       // console.log('state:' + $('.id-checkbox').is(':checked'));
+    }
+</script>
 <body>
-<!-- Fixed navbar -->
-<div class="navbar navbar-inverse navbar-fixed-top headroom" >
-    <div class="container">
-        <div class="navbar-header">
-            <!-- Button for smallest screens -->
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-            <a class="navbar-brand" href="index.html"><img src="assets/images/logo.png" alt="Progressus HTML5 template"></a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav pull-right">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">More Pages <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="sidebar-left.html">Left Sidebar</a></li>
-                        <li><a href="sidebar-right.html">Right Sidebar</a></li>
-                    </ul>
-                </li>
-                <li><a href="contact.html">Contact</a></li>
-                <li class="active"><a class="btn" href="signin.html">SIGN IN / SIGN UP</a></li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
-</div>
-<!-- /.navbar -->
-
-<header id="head" class="secondary"></header>
-
 <!-- container -->
 <div class="container">
 
     <ol class="breadcrumb">
-        <li><a href="index.html">Home</a></li>
+        <li><a href="#">Home</a></li>
         <li class="active">Registration</li>
     </ol>
 
@@ -86,24 +90,23 @@
             <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <h3 class="thin text-center">Register a new account</h3>
-                        <p class="text-center text-muted">Lorem ipsum dolor sit amet, <a href="signin.html">Login</a> adipisicing elit. Quo nulla quibusdam cum doloremque incidunt nemo sunt a tenetur omnis odio. </p>
+                        <h3 class="thin text-center">注册新账户</h3>
                         <hr>
 
                         <form>
                             <div class="top-margin">
                                 <label>用户名 <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" id="id-username">
                             </div>
 
                             <div class="row top-margin">
                                 <div class="col-sm-6">
                                     <label>密码 <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control">
+                                    <input type="password" class="form-control" id="id-password">
                                 </div>
                                 <div class="col-sm-6">
                                     <label>再次输入密码 <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control">
+                                    <input type="password" class="form-control" id="id-password_repete">
                                 </div>
                             </div>
 
@@ -112,12 +115,12 @@
                             <div class="row">
                                 <div class="col-lg-8">
                                     <label class="checkbox">
-                                        <input type="checkbox">
-                                        I've read the <a href="page_terms.html">Terms and Conditions</a>
+                                        <input class="id-checkbox" type="checkbox" onchange="check_change()">
+                                       同意条款
                                     </label>
                                 </div>
                                 <div class="col-lg-4 text-right">
-                                    <button class="btn btn-action" type="submit">Register</button>
+                                    <button class="btn btn-action" type="submit" disabled="false">注册</button>
                                 </div>
                             </div>
                         </form>
@@ -130,7 +133,7 @@
         <!-- /Article -->
 
     </div>
-</div>	<!-- /container -->
+</div>    <!-- /container -->
 
 
 <footer id="footer" class="top-space">
@@ -165,8 +168,14 @@
                 <div class="col-md-6 widget">
                     <h3 class="widget-title">Text widget</h3>
                     <div class="widget-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi, dolores, quibusdam architecto voluptatem amet fugiat nesciunt placeat provident cumque accusamus itaque voluptate modi quidem dolore optio velit hic iusto vero praesentium repellat commodi ad id expedita cupiditate repellendus possimus unde?</p>
-                        <p>Eius consequatur nihil quibusdam! Laborum, rerum, quis, inventore ipsa autem repellat provident assumenda labore soluta minima alias temporibus facere distinctio quas adipisci nam sunt explicabo officia tenetur at ea quos doloribus dolorum voluptate reprehenderit architecto sint libero illo et hic.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi, dolores, quibusdam
+                            architecto voluptatem amet fugiat nesciunt placeat provident cumque accusamus itaque
+                            voluptate modi quidem dolore optio velit hic iusto vero praesentium repellat commodi ad id
+                            expedita cupiditate repellendus possimus unde?</p>
+                        <p>Eius consequatur nihil quibusdam! Laborum, rerum, quis, inventore ipsa autem repellat
+                            provident assumenda labore soluta minima alias temporibus facere distinctio quas adipisci
+                            nam sunt explicabo officia tenetur at ea quos doloribus dolorum voluptate reprehenderit
+                            architecto sint libero illo et hic.</p>
                     </div>
                 </div>
 
@@ -193,7 +202,8 @@
                 <div class="col-md-6 widget">
                     <div class="widget-body">
                         <p class="text-right">
-                            Copyright &copy; 2014, Your name. Designed by <a href="http://gettemplate.com/" rel="designer">gettemplate</a>
+                            Copyright &copy; 2014, Your name. Designed by <a href="http://gettemplate.com/"
+                                                                             rel="designer">gettemplate</a>
                         </p>
                     </div>
                 </div>
@@ -204,12 +214,8 @@
 </footer>
 
 
-
-
-
 <!-- JavaScript libs are placed at the end of the document so the pages load faster -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="${ctx}/js/bootstrap.min.js"></script>
 <script src="${ctx}/js/headroom.min.js"></script>
 <script src="${ctx}/js/jQuery.headroom.min.js"></script>
 <script src="${ctx}/js/template.js"></script>

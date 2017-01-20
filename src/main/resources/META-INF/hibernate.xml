@@ -10,7 +10,7 @@
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
     ">
 
-    <context:property-placeholder location="classpath:/META-INF/hibernate.properties" />
+    <context:property-placeholder location="classpath:/META-INF/hibernate.properties"/>
 
     <!-- 使用C3P0数据源，MySQL数据库 -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
@@ -30,8 +30,8 @@
     <!-- spring与hibernate整合配置，扫描所有dao -->
     <bean id="sessionFactory"
           class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        <property name="packagesToScan" value="com.lov.entity" />
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="com.lov.entity"/>
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
@@ -42,12 +42,17 @@
         </property>
     </bean>
 
+    <!--定义事务管理器-->
+    <!--hibernate4必须配置为开启事务 否则 getCurrentSession()获取不到-->
+    <!--采用getCurrentSession()创建的session会绑定到当前线程中，而采用openSession()创建的session则不会。-->
+
+    <!--采用getCurrentSession()创建的session在commit或rollback时会自动关闭，而采用openSession()创建的session必须手动关闭。-->
     <bean id="transactionManager"
           class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"></property>
     </bean>
-
     <!-- 对数据源进行事务管理 -->
-    <tx:annotation-driven transaction-manager="transactionManager" />
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
 
 </beans>

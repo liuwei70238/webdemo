@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
-<head lang="zh-CN">
 <jsp:include page="head.jsp"></jsp:include>
     <title>登录界面</title>
 </head>
@@ -20,7 +19,7 @@
                 alert('密码为空');
             }else {
                 $.ajax({
-                    url: 'regist.do',
+                    url: 'login.do',
                     type: 'POST',
                     data: {
                         username: $("#id-username").val(),
@@ -30,12 +29,13 @@
                     success: function (r) {
                         if (r.code) {
                             alert('登陆成功');
+                            window.location.href="index.jsp";
                         } else {
                             alert('用户名或者密码错误');
                         }
                     },
                     error: function (xhr, e) {
-                        alert('请求出错');
+                        alert('请求出错' +  xhr);
                     }
 
                 });
@@ -69,11 +69,11 @@
 
                         <form>
                             <div class="top-margin">
-                                <label>Username/Email <span class="text-danger">*</span></label>
+                                <label>用户名 <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="id-username">
                             </div>
                             <div class="top-margin">
-                                <label>Password <span class="text-danger">*</span></label>
+                                <label>密码 <span class="text-danger">*</span></label>
                                 <input type="password" class="form-control" id="id-password">
                             </div>
 
@@ -82,6 +82,9 @@
                             <div class="row">
                                 <div class="col-lg-8">
                                     <b><a href="#">忘记密码?</a></b>
+                                </div>
+                                <div class="col-lg-8">
+                                    <b><a href="/regist-view.do">还没账号？点击注册</a></b>
                                 </div>
                                 <div class="col-lg-4 text-right">
                                     <button class="btn btn-action" id="btn_login" type="button" >登录</button>

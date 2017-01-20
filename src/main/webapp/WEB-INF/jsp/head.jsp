@@ -17,7 +17,7 @@
 
 
     <link rel="stylesheet" href="${ctx}/css/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="${ctx}/css/font-awesome.min.css">
+    <link rel="stylesheet" href="${ctx}/css/bootstrap/font-awesome.min.css">
 
     <!-- Custom styles for our template -->
     <link rel="stylesheet" href="${ctx}/css/bootstrap/bootstrap-theme.css" media="screen">
@@ -43,16 +43,30 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav pull-right">
                     <li class="active"><a href="/index.jsp">主页</a></li>
-                    <li><a href="about.html">关于</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">更多 <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="sidebar-left.html">Left Sidebar</a></li>
-                            <li class="active"><a href="sidebar-right.html">Right Sidebar</a></li>
-                        </ul>
+                    <li class="active"><a href="#">关于</a></li>
+                    <li class="active" >
+                        <a href="/family.do" >家谱</a>
                     </li>
-                    <li><a href="contact.html">联系我们</a></li>
-                    <li><a class="btn" href="/login-view.do">登录/ 注册</a></li>
+                    <li class="active"><a href="#">联系我们</a></li>
+                    <c:if test="${sessionScope.username == null}">
+                        <li  class="active"><a class="btn" href="/login-view.do">登录/ 注册</a></li>
+                    </c:if>
+
+                    <c:choose>
+                        <c:when test="${sessionScope.username != null}">
+                        <li class="dropdown">
+                            <a lass="dropdown-toggle" data-toggle="dropdown"><img class="img_user" src="/images/p_red.png"> ${sessionScope.username}<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/logout.do">退出账号</a></li>
+                                <li><a href="/login-view.do">切换账号</a></li>
+                            </ul>
+                        </li>
+                       </c:when>
+                        <c:otherwise>
+                            <li><a><img class="img_user" src="/images/p_white.png"></a></li>
+                        </c:otherwise>
+                    </c:choose>
+
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
